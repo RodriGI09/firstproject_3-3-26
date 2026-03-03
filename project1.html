@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Social Feed</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+  #feed { margin-top: 20px; }
+  .post { background: #fff; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+  .post-header { font-weight: bold; }
+  button { margin-right: 5px; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<h2>Mini Social Feed</h2>
+
+<label>Username: <input type="text" id="username" placeholder="Enter your username"></label>
+<br><br>
+
+<button onclick="addPost()">Add Post</button>
+<button onclick="removePost()">Remove Post</button>
+<button onclick="changeUsername()">Change Username</button>
+<button onclick="displayPosts()">Display All Posts</button>
+
+<div id="feed"></div>
+
+<script>
+let all_posts_archive = [];
+
+function addPost() {
+    const user = document.getElementById('username').value.trim();
+    if (!user) { alert("Please enter a username first!"); return; }
+
+    const post_input = prompt("What would you like to type for your post?");
+    if (!post_input) return;
+
+    const now = new Date();
+    const timestamp = now.toLocaleString(); // current date & time
+    const post_entry = { user: user, post: post_input, date: timestamp };
+
+    all_posts_archive.push(post_entry);
+    alert("Post added!");
+    displayPosts();
+}
+
+function removePost() {
+    if (all_posts_archive.length === 0) {
+        alert("No posts to remove!");
+        return;
+    }
+
+    displayPosts();
+    const index = prompt("Enter the number of the post you want to remove (starting from 0):");
+    const idx = parseInt(index);
+    if (!isNaN(idx) && idx >= 0 && idx < all_posts_archive.length) {
+        const removed = all_posts_archive.splice(idx, 1)[0];
+        alert(`Removed post by ${removed.user}`);
+        displayPosts();
+    } else {
+        alert("Invalid post number!");
+    }
+}
+
+function changeUsername() {
+    const newUser = prompt("Enter your new username:");
+    if (newUser) document.getElementById('username').value = newUser;
+}
+
+function displayPosts() {
+    const feedDiv = document.getElementById('feed');
+    feedDiv.innerHTML = '';
+    if (all_posts_archive.length === 0) {
+        feedDiv.innerHTML = "<p>No posts yet.</p>";
+        return;
+    }
+
+    all_posts_archive.forEach((post, index) => {
+        const div = document.createElement('div');
+        div.className = "post";
+        div.innerHTML = `<div class="post-header">${index}. ${post.user} - ${post.date}</div>
+                         <div class="post-content">${post.post}</div>`;
+        feedDiv.appendChild(div);
+    });
+}
+</script>
+
+</body>
+</html>
