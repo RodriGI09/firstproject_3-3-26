@@ -273,6 +273,37 @@ def show_posts():
         Element("output").write("No posts yet")
 
 </py-script>
+With this
+<py-script output="none">
+
+posts = []
+user = "Guest"
+
+def set_user():
+    global user
+    user = Element("username").value
+    Element("output").write(f"Username set to {user}")
+
+def add_post():
+    text = Element("post_text").value
+    if text:
+        posts.append(f"{user}: {text}")
+        Element("output").write("Post added!")
+
+def delete_post():
+    if posts:
+        posts.pop()
+        Element("output").write("Last post deleted")
+    else:
+        Element("output").write("No posts to delete")
+
+def show_posts():
+    if posts:
+        Element("output").write("\\n".join(posts))
+    else:
+        Element("output").write("No posts yet")
+
+</py-script>
 
 </div>
 
