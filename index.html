@@ -9,7 +9,6 @@
 <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
 <style>
-
 body{
 margin:0;
 font-family:Arial,sans-serif;
@@ -42,6 +41,7 @@ nav a{
 color:#00bfff;
 text-decoration:none;
 margin:0 15px;
+transition:0.3s;
 }
 
 nav a:hover{
@@ -57,44 +57,56 @@ background:#1c1c1c;
 border-radius:12px;
 box-shadow:0 8px 20px rgba(0,0,0,.6);
 margin-bottom:40px;
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+section:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 24px rgba(0,191,255,.5);
 }
 
 h2{
 border-bottom:2px solid #00bfff;
 padding-bottom:10px;
+text-shadow:1px 1px 4px #00bfff80;
 }
 
 .profile-pic{
 width:180px;
 border-radius:50%;
 margin-top:20px;
+box-shadow:0 4px 12px rgba(0,191,255,0.6);
 }
 
 .project{
 background:#1e1e1e;
-padding:20px;
+padding:25px;
 margin-top:20px;
-border-radius:8px;
+border-radius:12px;
+box-shadow:0 6px 16px rgba(0,191,255,0.3);
+transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.gallery{
-display:flex;
-flex-wrap:wrap;
-gap:15px;
+.project:hover{
+transform:translateY(-3px);
+box-shadow:0 10px 22px rgba(0,191,255,0.5);
 }
 
-.gallery img{
-width:200px;
-border-radius:8px;
+.project h3{
+color:#00bfff;
+margin-bottom:15px;
+text-shadow:1px 1px 4px #00bfff80;
 }
 
-input,select{
-padding:8px;
-margin:5px;
-border-radius:4px;
+input, select{
+padding:10px;
+margin:5px 0;
+border-radius:6px;
 border:1px solid #00bfff;
 background:#222;
 color:#eee;
+box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+width:calc(100% - 20px);
 }
 
 button{
@@ -102,12 +114,19 @@ border:none;
 padding:10px 20px;
 font-weight:bold;
 cursor:pointer;
-border-radius:5px;
-margin:5px;
+border-radius:6px;
+margin:5px 0;
 color:#fff;
 background:linear-gradient(45deg,#00bfff,#1effff,#00bfff);
 background-size:200% 200%;
 animation:glow 3s infinite;
+box-shadow:0 4px 12px rgba(0,191,255,0.6);
+transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 18px rgba(0,255,255,0.9);
 }
 
 @keyframes glow{
@@ -116,10 +135,31 @@ animation:glow 3s infinite;
 100%{background-position:0% 50%;}
 }
 
-pre{
+.output-panel{
 background:#000;
 padding:15px;
 border-radius:8px;
+margin-top:10px;
+box-shadow: inset 0 2px 6px rgba(0,191,255,0.3);
+white-space: pre-wrap;
+min-height:40px;
+transition:0.3s;
+}
+
+.output-success{
+color:#1eff7f;
+animation:flash 0.5s;
+}
+
+.output-error{
+color:#ff5555;
+animation:flash 0.5s;
+}
+
+@keyframes flash{
+0%{opacity:0;}
+50%{opacity:1;}
+100%{opacity:0;}
 }
 
 footer{
@@ -129,6 +169,25 @@ background:#000;
 margin-top:40px;
 }
 
+.gallery{
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+margin-top:15px;
+}
+
+.gallery img{
+width:200px;
+border-radius:8px;
+box-shadow:0 4px 12px rgba(0,191,255,0.4);
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gallery img:hover{
+transform: scale(1.05);
+box-shadow:0 6px 20px rgba(0,191,255,0.6);
+}
+
 </style>
 </head>
 
@@ -136,7 +195,6 @@ margin-top:40px;
 
 <header>
 <h1>Rodrigo Gonzalez</h1>
-
 <nav>
 <a href="#bio">Bio</a>
 <a href="#projects">Projects</a>
@@ -145,245 +203,198 @@ margin-top:40px;
 </nav>
 </header>
 
-
 <section id="bio">
-
 <h2>Bio</h2>
-
 <img src="images/fqs 2025-12-19 144257.149.JPG" class="profile-pic">
-
 <p>
 I’m a student interested in programming, technology, and building software projects.
 This portfolio shows some of the projects I’ve built using Python and MIT App Inventor.
 </p>
-
 </section>
 
-
 <section id="projects">
-
 <h2>Projects</h2>
 
+<!-- MIT App -->
 <div class="project">
-
 <h3>MIT App Inventor App</h3>
-
 <p>This is a mobile app I built using MIT App Inventor.</p>
-
-<a href="apps/Irigoyen_115.aia" download>
-<button>Download .AIA File</button>
-</a>
-
-<a href="https://apps.apple.com/app/id1422709355" target="_blank">
-<button>Open in App Store</button>
-</a>
-
+<a href="apps/Irigoyen_115.aia" download><button>Download .AIA File</button></a>
+<a href="https://apps.apple.com/app/id1422709355" target="_blank"><button>Open in App Store</button></a>
 </div>
 
-
+<!-- Post Manager -->
 <div class="project">
-
 <h3>Python Post Manager (Live Demo)</h3>
-
 <input id="username" placeholder="Enter Username">
 <button py-click="set_user()">Set Username</button>
-
-<br>
-
 <input id="post_text" placeholder="Write Post">
-
 <button py-click="add_post()">Add Post</button>
 <button py-click="delete_post()">Delete Last</button>
 <button py-click="show_posts()">Show Posts</button>
-
-<pre id="output"></pre>
-
+<div id="output" class="output-panel"></div>
 </div>
 
-
+<!-- Food Menu -->
 <div class="project">
-
 <h3>Python Food Menu Demo</h3>
-
-<p>Select your meal</p>
-
 <select id="sandwich">
 <option>Chicken</option>
 <option>Beef</option>
 <option>Tofu</option>
 </select>
-
 <select id="drink">
 <option>No Drinks</option>
 <option>Small Drink</option>
 <option>Medium Drink</option>
 <option>Large Drink</option>
 </select>
-
 <select id="fries">
 <option>No fries</option>
 <option>Small fries</option>
 <option>Medium fries</option>
 <option>Large fries</option>
 </select>
-
 <input id="ketchup" type="number" placeholder="Ketchup packets">
-
 <button py-click="calculate_total()">Calculate Total</button>
-
-<pre id="food_output"></pre>
-
+<div id="food_output" class="output-panel"></div>
 </div>
 
-
+<!-- Guessing Game -->
 <div class="project">
-
 <h3>Python Guessing Game</h3>
-
 <button py-click="start_game()">Start Game</button>
-
-<br><br>
-
 <input id="guess_box" placeholder="Enter guess (1-100)">
 <button py-click="check_guess()">Submit Guess</button>
-
-<pre id="guess_output"></pre>
-
+<div id="guess_output" class="output-panel"></div>
 </div>
 
 </section>
 
-
 <section id="gallery">
-
 <h2>Photo Gallery</h2>
-
 <div class="gallery">
-
 <img src="images/Screenshot 2026-03-05 070935.png">
 <img src="images/Screenshot 2026-03-05 070900.png">
 <img src="images/Screenshot 2026-03-05 070747.png">
 <img src="images/Library Photo.png">
-
 </div>
-
 </section>
-
 
 <section id="contact">
-
 <h2>Contact</h2>
-
 <p>Email: rgonzalezirigoyen28@belenwolverines.org</p>
 <p>GitHub: github.com/RodriGI09</p>
-
 </section>
-
 
 <footer>
 © 2026 Rodrigo Gonzalez | Portfolio
 </footer>
 
-
 <py-script>
-
 from pyscript import Element
 import random
 
+# --- Post Manager ---
 posts=[]
 user="Guest"
-
-secret_number=None
 
 def set_user():
     global user
     user = Element("username").element.value
     out = Element("output").element
-    out.innerText = f"Username set to {user}"
+    out.innerText=f"Username set to {user}"
+    out.className="output-panel output-success"
 
 def add_post():
     text = Element("post_text").element.value
     out = Element("output").element
     if text:
         posts.append(f"{user}: {text}")
-        out.innerText = "Post Added"
+        out.innerText="Post Added"
+        out.className="output-panel output-success"
+    else:
+        out.innerText="Enter some text!"
+        out.className="output-panel output-error"
 
 def delete_post():
     out = Element("output").element
     if posts:
         posts.pop()
-        out.innerText = "Deleted last post"
+        out.innerText="Deleted last post"
+        out.className="output-panel output-success"
     else:
-        out.innerText = "No posts to delete"
+        out.innerText="No posts to delete"
+        out.className="output-panel output-error"
 
 def show_posts():
     out = Element("output").element
     if posts:
-        out.innerText = "\n".join(posts)
+        out.innerText="\n".join(posts)
+        out.className="output-panel output-success"
     else:
-        out.innerText = "No posts yet"
+        out.innerText="No posts yet"
+        out.className="output-panel output-error"
 
-
+# --- Food Menu ---
 def calculate_total():
-
     sandwich=Element("sandwich").element.value
     drink=Element("drink").element.value
     fries=Element("fries").element.value
     ketchup=Element("ketchup").element.value
-
     total=0
-
     if sandwich=="Chicken":
         total+=5.25
     elif sandwich=="Beef":
         total+=6.25
     elif sandwich=="Tofu":
         total+=5.75
-
     if drink=="Small Drink":
         total+=1.00
     elif drink=="Medium Drink":
         total+=1.75
     elif drink=="Large Drink":
         total+=2.25
-
     if fries=="Small fries":
         total+=1.00
     elif fries=="Medium fries":
         total+=1.50
     elif fries=="Large fries":
         total+=2.00
-
     if ketchup:
         total+=int(ketchup)*0.25
+    out=Element("food_output").element
+    out.innerText=f"Total: ${round(total,2)}"
+    out.className="output-panel output-success"
 
-    Element("food_output").element.innerText = f"Total: ${round(total,2)}"
-
+# --- Guessing Game ---
+secret_number=None
 
 def start_game():
     global secret_number
     secret_number=random.randint(1,100)
-    Element("guess_output").element.innerText="Game started! Guess a number."
+    out=Element("guess_output").element
+    out.innerText="Game started! Guess a number."
+    out.className="output-panel output-success"
 
 def check_guess():
     global secret_number
-
-    guess=Element("guess_box").element.value
     out=Element("guess_output").element
-
-    if guess=="":
+    guess_text=Element("guess_box").element.value
+    if not guess_text:
         out.innerText="Enter a number."
+        out.className="output-panel output-error"
         return
-
-    guess=int(guess)
-
+    guess=int(guess_text)
     if guess<secret_number:
         out.innerText="Too low."
+        out.className="output-panel output-error"
     elif guess>secret_number:
         out.innerText="Too high."
+        out.className="output-panel output-error"
     else:
         out.innerText="Correct! You guessed it!"
-
+        out.className="output-panel output-success"
 </py-script>
 
 </body>
