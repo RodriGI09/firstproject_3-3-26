@@ -33,7 +33,39 @@
  
  header h1{
  margin:0;
-@@ -183,217 +180,200 @@ box-shadow:0 4px 12px rgba(0,191,255,0.4);
+@@ -155,245 +152,231 @@ animation:flash 0.5s;
+ color:#ff5555;
+ animation:flash 0.5s;
+ }
+ 
+ @keyframes flash{
+ 0%{opacity:0;}
+ 50%{opacity:1;}
+ 100%{opacity:0;}
+ }
+ 
+ footer{
+ text-align:center;
+ padding:20px;
+ background:#000;
+ margin-top:40px;
+ }
+ 
+ .gallery{
+ display:flex;
+ flex-wrap:wrap;
+ gap:15px;
+ margin-top:15px;
+ }
+ 
+ .gallery img{
+-width:200px;
++width:240px;
++max-width:100%;
++height:160px;
++object-fit:cover;
+ border-radius:8px;
+ box-shadow:0 4px 12px rgba(0,191,255,0.4);
  transition: transform 0.3s, box-shadow 0.3s;
  }
  
@@ -48,7 +80,7 @@
  <body>
  
  <header>
- <h1>Rodrigo Gonzalez Irigoyen</h1>
+ <h1>Rodrigo Gonzalez</h1>
  <nav>
  <a href="#bio">Bio</a>
  <a href="#projects">Projects</a>
