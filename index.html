@@ -109,7 +109,7 @@
       color: #061018;
       font-weight: 700;
       cursor: pointer;
-      border: none;
+ border: none;
     }
 
     button:hover {
@@ -132,6 +132,29 @@
 
     .output-error {
       color: #ff7f7f;
+    }
+
+    .code-toggle-btn {
+      margin-top: 10px;
+    }
+
+    .python-code {
+      display: none;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #2a2a2a;
+      background: #0d1117;
+      color: #d7f7ff;
+      overflow-x: auto;
+      white-space: pre;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .python-code.open {
+      display: block;
     }
 
     footer {
@@ -203,8 +226,9 @@
     <h2>Bio</h2>
     <img src="fqs 2025-12-19 144257.149.JPG" class="profile-pic" alt="Portrait of Rodrigo Gonzalez">
     <p>
-      I’m Rodrigo, a 10th grade student in Belen Jesuit, I am part of Mr.Riggs Honors CS class. I've dabbled in anything relating to computers. 
-      I've dipped in python, block coding, just started on HTML (like this website), and a hint of robotics. This portfolio is my highlights of those projects. 
+      I’m Rodrigo, a 10th grade student in Belen Jesuit, I am part of Mr.Riggs Honors CS class. 
+      I've dabbled in anything relating to computers.
+      I've dipped in python, block coding, just started on HTML (like this website), and a hint of robotics. This portfolio is my highlights of those projects.
     </p>
   </section>
 
@@ -227,6 +251,35 @@
       <button id="delete-post-btn">Delete Last</button>
       <button id="show-posts-btn">Show Posts</button>
       <div id="output" class="output-panel"></div>
+      <button class="code-toggle-btn" data-code-target="post-manager-code">Show Python Code</button>
+      <pre id="post-manager-code" class="python-code">posts = []
+user = "Guest"
+
+def set_username(name):
+    global user
+    user = name.strip() or "Guest"
+    print(f"Username set to {user}")
+
+def add_post(text):
+    text = text.strip()
+    if text:
+        posts.append(f"{user}: {text}")
+        print("Post added.")
+    else:
+        print("Enter some text first.")
+
+def delete_last_post():
+    if posts:
+        posts.pop()
+        print("Deleted last post.")
+    else:
+        print("No posts to delete.")
+
+def show_posts():
+    if posts:
+        print("\n".join(posts))
+    else:
+        print("No posts yet.")</pre>
     </div>
 
     <div class="project">
@@ -251,6 +304,35 @@
       <input id="ketchup" type="number" min="0" placeholder="Ketchup packets">
       <button id="calculate-total-btn">Calculate Total</button>
       <div id="food_output" class="output-panel"></div>
+      <button class="code-toggle-btn" data-code-target="food-menu-code">Show Python Code</button>
+      <pre id="food-menu-code" class="python-code">def calculate_total(sandwich, drink, fries, ketchup_packets):
+    total = 0
+
+    if sandwich == "Chicken":
+        total += 5.25
+    elif sandwich == "Beef":
+        total += 6.25
+    elif sandwich == "Tofu":
+        total += 5.75
+
+    if drink == "Small Drink":
+        total += 1.00
+    elif drink == "Medium Drink":
+        total += 1.75
+    elif drink == "Large Drink":
+        total += 2.25
+
+    if fries == "Small fries":
+        total += 1.00
+    elif fries == "Medium fries":
+        total += 1.50
+    elif fries == "Large fries":
+        total += 2.00
+
+    if ketchup_packets > 0:
+        total += ketchup_packets * 0.25
+
+    return round(total, 2)</pre>
     </div>
 
     <div class="project">
@@ -259,6 +341,21 @@
       <input id="guess_box" placeholder="Enter guess (1-100)">
       <button id="check-guess-btn">Submit Guess</button>
       <div id="guess_output" class="output-panel"></div>
+      <button class="code-toggle-btn" data-code-target="guessing-game-code">Show Python Code</button>
+      <pre id="guessing-game-code" class="python-code">import random
+
+secret_number = random.randint(1, 100)
+print("Game started! Guess a number from 1 to 100.")
+
+while True:
+    guess = int(input("Enter guess (1-100): "))
+    if guess < secret_number:
+        print("Too low.")
+    elif guess > secret_number:
+        print("Too high.")
+    else:
+        print("Correct! You guessed it!")
+        break</pre>
     </div>
 
     <div class="project">
@@ -278,6 +375,50 @@
       <button id="new-class-btn">Add Another Class</button>
       <div id="grade_output" class="output-panel"></div>
       <div id="class_history_output" class="output-panel"></div>
+      <button class="code-toggle-btn" data-code-target="grade-calculator-code">Show Python Code</button>
+      <pre id="grade-calculator-code" class="python-code">print("Welcome to UR GRADE CALCULATOR")
+name = input("What is your name? ")
+print("Welcome", name)
+final_grades = []
+class_with_grades = []
+total_num = 0
+total_den = 0
+loop_v = 1
+class_name = input("What class is this? ")
+print("This is", class_name)
+class_with_grades.append(class_name)
+
+while loop_v == 1:
+  first_a = input("What type of assignment did you do? ")
+  print(first_a)
+  first_w = int(input("What is the weight of it? "))
+  first_g = int(input("What did you get? "))
+  first_f1 = (first_g * first_w)/(first_w *100)
+  first_ff = (first_f1 *100)
+  print(first_ff)
+  final_grades.append(first_a)
+  final_grades.append(first_g)
+  print(final_grades)
+  total_num += first_g * first_w
+  total_den += first_w * 100
+  choice = input("Would you like to add another grade? ")
+  if (choice == "No"):
+    loop_v = 2
+    final_grades.append("///")
+    final_grade_ave = ((total_num/total_den) * 100)
+    final_grade_rounded = round(final_grade_ave, 2)
+    print("Your overall grade is",final_grade_rounded)
+    class_with_grades.append(final_grade_rounded)
+    class_with_grades.append("///")
+    print(class_with_grades)
+    again = input("Would you like to calculate your grade for another class? ")
+    if (again == "Yes"):
+      class_name = input("What class is this? ")
+      print("This is", class_name)
+      class_with_grades.append(class_name)
+      loop_v = 1
+    elif (again == "No"):
+      loop_v = 2</pre>
     </div>
   </section>
 
@@ -288,8 +429,8 @@
       <img src="Screenshot 2026-03-05 070900.png" alt="Portfolio screenshot 2">
       <img src="Screenshot 2026-03-05 070747.png" alt="Portfolio screenshot 3">
       <img src="Library Photo.png" alt="Library photo">
-      <img src="Screenshot 2026-03-26 at 17.29.16.png" alt="New gallery photo 1">
-      <img src="Screenshot 2026-03-26 at 17.26.59.png" alt="New gallery photo 2">
+      <img src="your-new-image-1.png" alt="New gallery photo 1">
+      <img src="your-new-image-2.png" alt="New gallery photo 2">
     </div>
   </section>
   <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -341,50 +482,7 @@
       if (posts.length > 0) {
         posts.pop();
         setOutput(document.getElementById("output"), "Deleted last post.", true);
-      } else {
-        setOutput(document.getElementById("output"), "No posts to delete.", false);
-      }
-    });
-
-    document.getElementById("show-posts-btn").addEventListener("click", () => {
-      if (posts.length > 0) {
-        setOutput(document.getElementById("output"), posts.join("\n"), true);
-      } else {
-        setOutput(document.getElementById("output"), "No posts yet.", false);
-      }
-    });
-
-    document.getElementById("calculate-total-btn").addEventListener("click", () => {
-      const sandwich = document.getElementById("sandwich").value;
-      const drink = document.getElementById("drink").value;
-      const fries = document.getElementById("fries").value;
-      const ketchupValue = document.getElementById("ketchup").value;
-      const ketchup = Number.parseInt(ketchupValue || "0", 10);
-      let total = 0;
-
-      if (sandwich === "Chicken") total += 5.25;
-      else if (sandwich === "Beef") total += 6.25;
-      else if (sandwich === "Tofu") total += 5.75;
-
-      if (drink === "Small Drink") total += 1.00;
-      else if (drink === "Medium Drink") total += 1.75;
-      else if (drink === "Large Drink") total += 2.25;
-
-      if (fries === "Small fries") total += 1.00;
-      else if (fries === "Medium fries") total += 1.50;
-      else if (fries === "Large fries") total += 2.00;
-
-      if (!Number.isNaN(ketchup) && ketchup > 0) {
-        total += ketchup * 0.25;
-      }
-
-      setOutput(document.getElementById("food_output"), `Total: $${total.toFixed(2)}`, true);
-    });
-
-    document.getElementById("start-game-btn").addEventListener("click", () => {
-      secretNumber = Math.floor(Math.random() * 100) + 1;
-      setOutput(document.getElementById("guess_output"), "Game started! Guess a number from 1 to 100.", true);
-    });
+@@ -334,28 +528,152 @@
 
     document.getElementById("check-guess-btn").addEventListener("click", () => {
       const output = document.getElementById("guess_output");
@@ -522,6 +620,17 @@
       lightbox.setAttribute("aria-hidden", "true");
       lightboxImage.src = "";
       lightboxImage.alt = "";
+    });
+
+    document.querySelectorAll(".code-toggle-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const targetId = button.getAttribute("data-code-target");
+        const codeBlock = document.getElementById(targetId);
+        if (!codeBlock) return;
+
+        const isOpen = codeBlock.classList.toggle("open");
+        button.innerText = isOpen ? "Hide Python Code" : "Show Python Code";
+      });
     });
   </script>
 </body>
