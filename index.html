@@ -155,11 +155,35 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 191, 255, 0.4);
       transition: transform 0.3s, box-shadow 0.3s;
+      cursor: zoom-in;
     }
 
     .gallery img:hover {
       transform: scale(1.03);
       box-shadow: 0 6px 20px rgba(0, 191, 255, 0.6);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, 0.82);
+      z-index: 999;
+      padding: 20px;
+      cursor: zoom-out;
+    }
+
+    .lightbox.open {
+      display: grid;
+    }
+
+    .lightbox img {
+      width: min(92vw, 1000px);
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 12px 30px rgba(0, 191, 255, 0.35);
     }
   </style>
 </head>
@@ -179,8 +203,8 @@
     <h2>Bio</h2>
     <img src="fqs 2025-12-19 144257.149.JPG" class="profile-pic" alt="Portrait of Rodrigo Gonzalez">
     <p>
-      I’m a student interested in programming, technology, and building software projects.
-      This portfolio shows some of the projects I’ve built using Python and MIT App Inventor.
+      I’m Rodrigo, a 10th grade student in Belen Jesuit, I am part of Mr.Riggs Honors CS class. I've dabbled in anything relating to computers. 
+      I've dipped in python, block coding, html (like this website that I made), and a hint of robotics. This portfolio is my highlights in those projects. 
     </p>
   </section>
 
@@ -236,6 +260,25 @@
       <button id="check-guess-btn">Submit Guess</button>
       <div id="guess_output" class="output-panel"></div>
     </div>
+
+    <div class="project">
+      <h3>Python Class Grade Calculator</h3>
+      <input id="student_name" placeholder="What is your name?">
+      <button id="start-grade-calc-btn">Start Grade Calculator</button>
+      <div id="grade_intro_output" class="output-panel"></div>
+
+      <input id="class_name" placeholder="What class is this?">
+      <button id="set-class-btn">Set Class</button>
+
+      <input id="assignment_type" placeholder="Assignment type">
+      <input id="assignment_weight" type="number" min="1" placeholder="Weight (%)">
+      <input id="assignment_grade" type="number" min="0" max="100" placeholder="Grade (%)">
+      <button id="add-grade-btn">Add Grade</button>
+      <button id="finish-class-btn">Finish Class</button>
+      <button id="new-class-btn">Add Another Class</button>
+      <div id="grade_output" class="output-panel"></div>
+      <div id="class_history_output" class="output-panel"></div>
+    </div>
   </section>
 
   <section id="gallery">
@@ -245,8 +288,13 @@
       <img src="Screenshot 2026-03-05 070900.png" alt="Portfolio screenshot 2">
       <img src="Screenshot 2026-03-05 070747.png" alt="Portfolio screenshot 3">
       <img src="Library Photo.png" alt="Library photo">
+      <img src="Screenshot 2026-03-26 at 17.29.16.png" alt="New gallery photo 1">
+      <img src="Screenshot 2026-03-26 at 17.29.59.png" alt="New gallery photo 2">
     </div>
   </section>
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img id="lightbox-image" src="" alt="">
+  </div>
 
   <section id="contact">
     <h2>Contact</h2>
@@ -262,6 +310,12 @@
     const posts = [];
     let user = "Guest";
     let secretNumber = null;
+    let gradeCalculatorStarted = false;
+    let currentClass = "";
+    let totalNum = 0;
+    let totalDen = 0;
+    let currentAssignments = [];
+    const classWithGrades = [];
 
     function setOutput(el, text, success = true) {
       el.innerText = text;
@@ -355,6 +409,119 @@
       } else {
         setOutput(output, "Correct! You guessed it!", true);
       }
+    });
+
+    document.getElementById("start-grade-calc-btn").addEventListener("click", () => {
+      const studentName = document.getElementById("student_name").value.trim();
+      if (!studentName) {
+        setOutput(document.getElementById("grade_intro_output"), "Please enter your name first.", false);
+        return;
+      }
+      gradeCalculatorStarted = true;
+      setOutput(document.getElementById("grade_intro_output"), `Welcome ${studentName}. Start by entering a class name.`, true);
+    });
+
+    document.getElementById("set-class-btn").addEventListener("click", () => {
+      const className = document.getElementById("class_name").value.trim();
+      if (!gradeCalculatorStarted) {
+        setOutput(document.getElementById("grade_intro_output"), "Click 'Start Grade Calculator' first.", false);
+        return;
+      }
+      if (!className) {
+        setOutput(document.getElementById("grade_output"), "Please enter a class name.", false);
+        return;
+      }
+      currentClass = className;
+      totalNum = 0;
+      totalDen = 0;
+      currentAssignments = [];
+      classWithGrades.push(currentClass);
+      setOutput(document.getElementById("grade_output"), `This is ${currentClass}. Add assignments and grades.`, true);
+    });
+
+    document.getElementById("add-grade-btn").addEventListener("click", () => {
+      if (!currentClass) {
+        setOutput(document.getElementById("grade_output"), "Set your class first.", false);
+        return;
+      }
+
+      const assignmentType = document.getElementById("assignment_type").value.trim();
+      const assignmentWeight = Number.parseFloat(document.getElementById("assignment_weight").value);
+      const assignmentGrade = Number.parseFloat(document.getElementById("assignment_grade").value);
+
+      if (!assignmentType || Number.isNaN(assignmentWeight) || Number.isNaN(assignmentGrade)) {
+        setOutput(document.getElementById("grade_output"), "Enter assignment type, weight, and grade.", false);
+        return;
+      }
+      if (assignmentWeight <= 0 || assignmentGrade < 0 || assignmentGrade > 100) {
+        setOutput(document.getElementById("grade_output"), "Use a weight > 0 and grade between 0 and 100.", false);
+        return;
+      }
+
+      totalNum += assignmentGrade * assignmentWeight;
+      totalDen += assignmentWeight * 100;
+      currentAssignments.push(`${assignmentType}: ${assignmentGrade}%`);
+
+      setOutput(
+        document.getElementById("grade_output"),
+        `${currentClass} assignments:\n${currentAssignments.join("\n")}`,
+        true
+      );
+    });
+
+    document.getElementById("finish-class-btn").addEventListener("click", () => {
+      if (!currentClass) {
+        setOutput(document.getElementById("grade_output"), "Set your class first.", false);
+        return;
+      }
+      if (totalDen === 0) {
+        setOutput(document.getElementById("grade_output"), "Add at least one assignment first.", false);
+        return;
+      }
+
+      const finalGrade = (totalNum / totalDen) * 100;
+      const finalGradeRounded = Math.round(finalGrade * 100) / 100;
+      classWithGrades.push(finalGradeRounded);
+      classWithGrades.push("///");
+
+      setOutput(document.getElementById("grade_output"), `Your overall grade in ${currentClass} is ${finalGradeRounded}.`, true);
+      setOutput(document.getElementById("class_history_output"), `Class history:\n${classWithGrades.join("\n")}`, true);
+    });
+
+    document.getElementById("new-class-btn").addEventListener("click", () => {
+      if (!gradeCalculatorStarted) {
+        setOutput(document.getElementById("grade_intro_output"), "Click 'Start Grade Calculator' first.", false);
+        return;
+      }
+      currentClass = "";
+      totalNum = 0;
+      totalDen = 0;
+      currentAssignments = [];
+      document.getElementById("class_name").value = "";
+      document.getElementById("assignment_type").value = "";
+      document.getElementById("assignment_weight").value = "";
+      document.getElementById("assignment_grade").value = "";
+      setOutput(document.getElementById("grade_output"), "Ready for another class. Enter the new class name and click 'Set Class'.", true);
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = document.getElementById("lightbox-image");
+    const galleryImages = document.querySelectorAll(".gallery img");
+
+    galleryImages.forEach((image) => {
+      image.addEventListener("click", () => {
+        lightboxImage.src = image.src;
+        lightboxImage.alt = image.alt;
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.src = "";
+      lightboxImage.alt = "";
     });
   </script>
 </body>
